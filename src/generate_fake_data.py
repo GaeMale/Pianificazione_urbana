@@ -2,18 +2,13 @@ import random
 
 import pandas as pd
 import geopandas as gpd
-import folium
 import numpy as np
 import os
 from datetime import datetime, timedelta
 
 from config import cities_data
 
-###def generate_fake_accidents_data(nodes_gdf, pois_gdf, center_lat, center_lon, lat_std, lon_std, buffer_distance, num_accidents):
 def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance, num_accidents,
-                                 # Nuovi parametri per il CENTRO e la DISPERSIONE degli incidenti fittizi,
-                                 # NON per filtrare l'area di base.
-                                 # Sono resi opzionali e hanno valori di default ragionevoli.
                                  incident_generation_center_lat=None,
                                  incident_generation_center_lon=None,
                                  incident_generation_spread_lat=0.01, # ~1km di dispersione latitudinale
@@ -42,67 +37,33 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
     """
 
     print(f"Generazione di {num_accidents} incidenti fittizi...")
-    #print(f"Centro geografico: ({center_lat}, {center_lon}), Deviazioni standard: ({lat_std}, {lon_std})")
     print(f"Buffer di rischio per POI: {buffer_distance}m.")
 
-    ###if nodes_gdf.crs is None or not nodes_gdf.crs.is_geographic:
-    ###    print("ATTENZIONE: nodes_gdf non è in un CRS geografico. Tentativo di conversione a EPSG:4326.")
-    ###    nodes_gdf_geographic = nodes_gdf.to_crs("EPSG:4326")
-    ###else:
-    ###    nodes_gdf_geographic = nodes_gdf.copy() # Lavora su una copia per non modificare l'originale
-
-    # Assumiamo che nodes_gdf_full_area sia già in EPSG:4326 e rappresenti l'intera area di studio.
-    # Non è necessario un controllo CRS qui, ma è buona pratica assicurarlo a monte nel main.
     nodes_gdf_geographic = nodes_gdf_full_area.copy()
 
     if nodes_gdf_geographic.empty:
         print("AVVISO: nodes_gdf_full_area è vuoto. Impossibile generare incidenti.")
         return pd.DataFrame(columns=['Latitudine', 'Longitudine', 'Data', 'Ora', 'Gravita', 'Causa', 'Tipo Veicolo'])
+
     print(f"Base di {len(nodes_gdf_geographic)} nodi (incroci) reali per l'area di studio.")
 
-    #### Definisci l'area di interesse basata sulle deviazioni standard
-    #### Usiamo 3 deviazioni standard per coprire ~99.7% della distribuzione
-    #### Questo definisce una scatola in cui i nodi verranno considerati per la generazione.
-    ###lat_range = 3 * lat_std
-    ###lon_range = 3 * lon_std
-###
-    ###min_lat, max_lat = center_lat - lat_range, center_lat + lat_range
-    ###min_lon, max_lon = center_lon - lon_range, center_lon + lon_range
-###
-    #### Filtra i nodi OSM che si trovano all'interno di questa scatola geografica
-    ###nodes_in_area_gdf = nodes_gdf_geographic[
-    ###    (nodes_gdf_geographic.geometry.y >= min_lat) &
-    ###    (nodes_gdf_geographic.geometry.y <= max_lat) &
-    ###    (nodes_gdf_geographic.geometry.x >= min_lon) &
-    ###    (nodes_gdf_geographic.geometry.x <= max_lon)
-    ###    ].copy() # Lavora su una copia filtrata
-###
-    ###if nodes_in_area_gdf.empty:
-    ###    print("AVVISO: Nessun nodo trovato nell'area definita (center_lat/lon + std). Impossibile generare incidenti.")
-    ###    return pd.DataFrame(columns=['Latitudine', 'Longitudine', 'Data', 'Ora', 'Gravita', 'Causa', 'Tipo Veicolo'])
-    ###print(f"Filtrati {len(nodes_in_area_gdf)} nodi nell'area di interesse geografica.")
-
-    # Questa riga è la chiave: nodes_in_area_gdf ora è l'intero set di nodi.
+    # nodes_in_area_gdf ora è l'intero set di nodi (non filtrato).
     nodes_in_area_gdf = nodes_gdf_geographic
 
-    if incident_generation_center_lat is None:
-        incident_generation_center_lat = nodes_gdf_geographic.geometry.y.mean()
-    if incident_generation_center_lon is None:
-        incident_generation_center_lon = nodes_gdf_geographic.geometry.x.mean()
+    ###if incident_generation_center_lat is None:
+    ###    incident_generation_center_lat = nodes_gdf_geographic.geometry.y.mean()
+    ###if incident_generation_center_lon is None:
+    ###    incident_generation_center_lon = nodes_gdf_geographic.geometry.x.mean()
+###
+    ###print(f"Centro per la generazione degli incidenti fittizi: ({incident_generation_center_lat}, {incident_generation_center_lon})")
+    ###print(f"Spread per la generazione degli incidenti fittizi: ({incident_generation_spread_lat}, {incident_generation_spread_lon})")
 
-    print(f"Centro per la generazione degli incidenti fittizi: ({incident_generation_center_lat}, {incident_generation_center_lon})")
-    print(f"Spread per la generazione degli incidenti fittizi: ({incident_generation_spread_lat}, {incident_generation_spread_lon})")
-
-    # --- 1. Proietta i GeoDataFrame per i calcoli spaziali ---
-    # Stima o usa il CRS proiettato dall'intera area per coerenza.
-    # Questa stima è cruciale e viene fatta correttamente su nodes_gdf_geographic (l'intera area).
+    # Proietta i GeoDataFrame per i calcoli spaziali
     target_crs_proj = nodes_gdf_geographic.estimate_utm_crs()
     print(f"CRS proiettato stimato per l'area di interesse: {target_crs_proj.to_string()}")
 
     nodes_gdf_proj = nodes_gdf_geographic.to_crs(target_crs_proj)
 
-    # Prepara pois_gdf_proj: aggiungi 'original_poi_id' se non c'è già
-    # e poi proietta.
     if pois_gdf is not None and not pois_gdf.empty:
         if 'original_poi_id' not in pois_gdf.columns:
             pois_gdf['original_poi_id'] = pois_gdf.index.map(str) + '_poi'
@@ -113,7 +74,7 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
         pois_gdf_proj = gpd.GeoDataFrame(geometry=[], crs=target_crs_proj)
         print("AVVISO: pois_gdf è vuoto o None. Nessun fattore di rischio basato sui POI verrà considerato.")
 
-    # Prepara i buffer dei nodi per l'analisi del rischio (corretto)
+    # Prepara i buffer dei nodi per l'analisi del rischio
     nodes_buffered_gdf = gpd.GeoDataFrame(
         {'geometry': nodes_gdf_proj.geometry.buffer(buffer_distance)},
         index=nodes_gdf_proj.index,
@@ -122,52 +83,9 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
     nodes_buffered_gdf.index.name = 'osmid'
     print(f"Creati {len(nodes_buffered_gdf)} buffer di {buffer_distance}m attorno ai nodi.")
 
-    #### --- 1. Proietta i GeoDataFrame filtrati per i calcoli spaziali ---
-    #### Stima o usa il CRS proiettato per i calcoli spaziali locali (in metri)
-    #### Stima il CRS proiettato dal subset filtrato per maggiore precisione locale
-    ###target_crs_proj = nodes_in_area_gdf.estimate_utm_crs()
-    ###print(f"CRS proiettato stimato per l'area di interesse: {target_crs_proj.to_string()}")
-###
-    ###nodes_gdf_proj = nodes_in_area_gdf.to_crs(target_crs_proj)
-
-
-    #nodes_gdf_proj = nodes_gdf.to_crs(target_crs_proj)
-
-    # Prepara pois_gdf_proj: aggiungi 'original_poi_id' se non c'è già (dovrebbe esserci da pre-elaborazione)
-    # e poi proietta.
-    ###if pois_gdf is not None and not pois_gdf.empty:
-    ###    if 'original_poi_id' not in pois_gdf.columns:
-    ###        # Crea original_poi_id se non esiste, basato sull'indice corrente
-    ###        #pois_gdf['original_poi_id'] = pois_gdf.index.astype(str) + '_poi' # Assicura un ID univoco
-    ###        pois_gdf['original_poi_id'] = pois_gdf.index.map(str) + '_poi'
-    ###    # Filtra i POI per includere solo quelli che potenzialmente si trovano nell'area di interesse
-    ###    # per ottimizzare sjoin
-    ###    # Assicurati che pois_gdf sia in CRS geografico per il filtro .cx
-    ###    if pois_gdf.crs is None or not pois_gdf.crs.is_geographic:
-    ###        pois_gdf_geographic = pois_gdf.to_crs("EPSG:4326")
-    ###    else:
-    ###        pois_gdf_geographic = pois_gdf.copy()
-###
-    ###    pois_gdf_filtered_geographic = pois_gdf_geographic.cx[min_lon:max_lon, min_lat:max_lat]
-    ###    pois_gdf_proj = pois_gdf_filtered_geographic.to_crs(target_crs_proj)
-    ###    print(f"Pois_gdf filtrato e proiettato. ({len(pois_gdf_proj)} POI rimanenti nell'area)")
-    ###else:
-    ###    # Se pois_gdf è vuoto o None, crea un GeoDataFrame vuoto ma con il CRS corretto
-    ###    pois_gdf_proj = gpd.GeoDataFrame(geometry=[], crs=target_crs_proj)
-    ###    print("AVVISO: pois_gdf è vuoto o None. Nessun fattore di rischio basato sui POI verrà considerato.")
-###
-    #### Prepara i buffer dei nodi filtrati per l'analisi del rischio
-    ###nodes_buffered_gdf = gpd.GeoDataFrame(
-    ###    {'geometry': nodes_gdf_proj.geometry.buffer(buffer_distance)},
-    ###    index=nodes_gdf_proj.index,
-    ###    crs=target_crs_proj
-    ###)
-    ###nodes_buffered_gdf.index.name = 'osmid'
-    ###print(f"Creati {len(nodes_buffered_gdf)} buffer di {buffer_distance}m attorno ai nodi filtrati.")
-
-    # --- 2. Calcola i "punteggi di rischio" per ogni nodo filtrato ---
+    # Calcola i "punteggi di rischio" per ogni nodo filtrato
     # Inizializza un punteggio di rischio base per tutti i nodi nell'area filtrata
-    node_risk_scores = pd.Series(1.0, index=nodes_gdf_proj.index, name='risk_score') # Partiamo da 1.0 per evitare probabilità zero
+    node_risk_scores = pd.Series(1.0, index=nodes_gdf_proj.index, name='risk_score') # Parto da 1.0 per evitare probabilità zero
 
     if not pois_gdf_proj.empty and not nodes_buffered_gdf.empty:
         # Effettua un sjoin tra i POI proiettati e i buffer dei nodi
@@ -208,8 +126,7 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
     else:
         print("pois_gdf è vuoto o nessun POI nell'area, quindi nessun fattore di rischio basato sui POI verrà considerato.")
 
-    # --- 3. Normalizza i punteggi di rischio per usarli come probabilità di selezione ---
-    # Questa parte è corretta per la normalizzazione delle probabilità.
+    # Normalizza i punteggi di rischio per usarli come probabilità di selezione
     node_risk_scores = node_risk_scores.clip(lower=1.0)
     total_risk_score = node_risk_scores.sum()
 
@@ -222,7 +139,7 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
             print(f"Avviso: Somma delle probabilità non 1.0: {probabilities.sum()}. Re-normalizzazione forzata.")
             probabilities = probabilities / probabilities.sum()
 
-    # --- 4. Genera gli incidenti campionando i nodi in base alle probabilità ---
+    # Genera gli incidenti campionando i nodi in base alle probabilità
     accidents_data_list = []
 
     start_date = datetime(2024, 1, 1)
@@ -274,21 +191,6 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
     else:
         daily_accident_probabilities = daily_risk_factors / daily_risk_factors.sum()
 
-    # Genera gli attributi non spaziali degli incidenti (gravità, causa, tipo veicolo, timestamp)
-    # per tutti gli incidenti in una volta per efficienza
-    ###fake_severities = np.random.randint(1, 5, num_accidents).tolist() # 1=lieve, 2=moderato, 3=grave, 4=mortale
-    ###causes = ['eccesso_velocita', 'distrazione', 'mancato_rispetto_stop', 'mancanza_precedenza', 'condizioni_stradali', 'guida_sotto_effetto_sostanze']
-    ###vehicle_types = ['auto', 'moto', 'bicicletta', 'camion', 'furgone', 'pedone']
-    ###fake_causes = random.choices(causes, k=num_accidents)
-    ###fake_vehicle_types = random.choices(vehicle_types, k=num_accidents)
-###
-    #### Genera timestamp casuali
-    ###start_date = datetime(2023, 1, 1)
-    ###end_date = datetime(2023, 12, 31)
-    ###time_delta_seconds = int((end_date - start_date).total_seconds())
-    ###fake_timestamps = [start_date + timedelta(seconds=random.randint(0, time_delta_seconds))
-    ###                   for _ in range(num_accidents)]
-
     # Campiona i nodi in base alle probabilità di rischio all'interno dell'area filtrata
     if not probabilities.empty and len(nodes_gdf_proj) > 0:
         chosen_day_offsets = random.choices(
@@ -299,7 +201,6 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
         fake_timestamps = [start_date + timedelta(days=offset) for offset in chosen_day_offsets]
 
         # Campiona gli OSMID dei nodi (cioè le posizioni)
-        # Questo è il punto dove il campionamento avviene sull'intera area.
         sampled_nodes_osmid = random.choices(
             population=nodes_gdf_proj.index.tolist(),
             weights=probabilities.tolist(),
@@ -309,8 +210,7 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
         print("Nessuna probabilità calcolata o nessun nodo disponibile per la generazione di incidenti.") # Modificato il messaggio
         return pd.DataFrame(columns=['Latitudine', 'Longitudine', 'Data', 'Ora', 'Gravita', 'Causa', 'Tipo Veicolo'])
 
-    # --- NUOVA SEZIONE: Riproeitta le geometrie dei nodi campionati in massa ---
-    # Questa sezione è stata aggiunta correttamente.
+    # Riproeitta le geometrie dei nodi campionati in massa
     sampled_geometries_proj = nodes_gdf_proj.loc[sampled_nodes_osmid].geometry
 
     # Riproeitta l'intera GeoSeries in EPSG:4326 in un'unica operazione
@@ -322,27 +222,20 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
     vehicle_types = ['auto', 'moto', 'bicicletta', 'camion', 'furgone']
 
     # Popola la lista degli incidenti con i dati e le coordinate dei nodi campionati
-    # Ciclo per popolare la lista degli incidenti con i dati e le coordinate dei nodi campionati
     for i, incident_point_geom_4326 in enumerate(sampled_geometries_4326):
         current_date = fake_timestamps[i]
         accident_hour = np.random.randint(0, 24)
         accident_minute = np.random.randint(0, 60)
         accident_time = f"{accident_hour:02d}:{accident_minute:02d}"
 
-        # --- Modulazione della Gravità e Condizioni Meteo in base a Ora/Stagione ---
-        # Questa logica è opzionale ma aggiunge realismo.
-        # Puoi affinarla molto di più.
-
-        # Base probability for severity
+        # Modulazione della Gravità e Condizioni Meteo in base a Ora/Stagione
         p_severity_1, p_severity_2, p_severity_3, p_severity_4 = 0.7, 0.2, 0.08, 0.02
 
-        # Adjust based on time of day
         if 22 <= accident_hour or accident_hour <= 6:
             p_severity_1, p_severity_2, p_severity_3, p_severity_4 = 0.4, 0.35, 0.2, 0.05
         elif 7 <= accident_hour <= 9 or 17 <= accident_hour <= 19:
             p_severity_1, p_severity_2, p_severity_3, p_severity_4 = 0.6, 0.25, 0.1, 0.05
 
-        # Adjust based on season
         month = current_date.month
         weather_condition = random.choice(['Sereno', 'Pioggia', 'Nebbia', 'Neve'])
         if month in [12, 1, 2]:
@@ -386,64 +279,11 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
     print(f"Generati {len(df_incidents)} incidenti fittizi con distribuzione geografica e biasata dal rischio.")
     return df_incidents
 
-    ######################### OLD #########################
-    ########################## Genera coordinate casuali intorno al centro della città
-    #########################fake_lat = np.random.normal(center_lat, lat_std, num_accidents)
-    #########################fake_lon = np.random.normal(center_lon, lon_std, num_accidents)
-
-    ########################## Genera gravità casuale (es. da 1 a 4)
-    #########################fake_severity = np.random.randint(1, 5, num_accidents) # 1=lieve, 2=moderato, 3=grave, 4=mortale
-
-    ########################## Genera date casuali per l'anno 2023
-    #########################start_date = datetime(2023, 1, 1)
-    #########################end_date = datetime(2023, 12, 31)
-    #########################time_delta = end_date - start_date
-
-    #########################fake_date_timedelta = np.random.randint(0, time_delta.days + 1, num_accidents)
-    #########################fake_date = [start_date + timedelta(days=int(td)) for td in fake_date_timedelta]
-
-    ########################## Genera ore casuali
-    #########################fake_time_hours = np.random.randint(0, 24, num_accidents)
-    #########################fake_time_minutes = np.random.randint(0, 60, num_accidents)
-    #########################fake_time = [f"{h:02d}:{m:02d}" for h, m in zip(fake_time_hours, fake_time_minutes)]
-
-    ########################## Cause di incidente fittizie
-    #########################causes = ['eccesso_velocita', 'distrazione', 'mancato_rispetto_stop', 'mancanza_precedenza', 'condizioni_stradali', 'guida_sotto_effetto_sostanze']
-    #########################fake_cause = np.random.choice(causes, num_accidents)
-
-    ########################## Tipi di veicolo fittizi
-    #########################vehicle_types = ['auto', 'moto', 'bicicletta', 'camion', 'furgone', 'pedone'] # Aggiunto pedone per maggiore varietà
-    #########################fake_vehicle_type = np.random.choice(vehicle_types, num_accidents)
-
-    #########################df = pd.DataFrame({
-    #########################    'Latitudine': fake_lat,
-    #########################    'Longitudine': fake_lon,
-    #########################    'Data': [d.strftime('%d/%m/%Y') for d in fake_date],
-    #########################    'Ora': fake_time,
-    #########################    'Gravita': fake_severity,
-    #########################    'Causa': fake_cause,
-    #########################    'Tipo Veicolo': fake_vehicle_type
-    #########################})
-    #########################return df
-    ######################### OLD #########################
-
 
 def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_sensors, num_readings_per_sensor,
-                               # Rimuovi: center_lat, center_lon, lat_std, lon_std
                                buffer_distance_poi=100,
                                road_type_weights=None, # Pesi per i tipi di strada
-                               # Aggiungi parametri opzionali per il centro di generazione dei sensori,
-                               # se si vuole un raggruppamento che non sia solo basato sul potenziale di traffico.
-                               # Per ora, li lasciamo fuori in quanto il posizionamento si basa sul potenziale.
-                               # sensor_generation_center_lat=None,
-                               # sensor_generation_center_lon=None,
-                               # sensor_generation_spread_lat=0.01,
-                               # sensor_generation_spread_lon=0.01
                                ):
-###def generate_fake_traffic_data(G, nodes_gdf, pois_gdf, city_name, num_sensors, num_readings_per_sensor,
-###                               center_lat, center_lon, lat_std, lon_std,
-###                               buffer_distance_poi=100,
-###                               road_type_weights=None): # Pesi per i tipi di strada
     """
     Genera dati di traffico fittizi più realistici per una data città,
     posizionando sensori su nodi OSM e modulando il traffico in base a:
@@ -469,8 +309,6 @@ def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_
     """
 
     print(f"\nGenerazione di {num_sensors} sensori di traffico con {num_readings_per_sensor} letture ciascuno...")
-    # Rimuovi questa riga, non è più rilevante per il filtro.
-    # print(f"Centro geografico: ({center_lat}, {center_lon}), Deviazioni standard: ({lat_std}, {lon_std})")
     print(f"Buffer di influenza POI: {buffer_distance_poi}m.")
 
     # Pesi di default per i tipi di strada se non forniti
@@ -499,14 +337,12 @@ def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_
         'public_transport': 1.5, 'hospital': 3.5, 'clinic': 2, 'parking': 1.5
     }
 
-    # --- 1. Utilizza tutti i nodi OSM e POI dell'area di interesse geografica (non più filtrati da box ristretto) ---
+    # Utilizza tutti i nodi OSM e POI dell'area di interesse geografica (non più filtrati da box ristretto)
     # Assicurati che nodes_gdf_full_area sia già in EPSG:4326.
     nodes_gdf_geographic = nodes_gdf_full_area.copy()
 
-    # Rimuovi tutto il blocco di codice per min_lat, max_lat, min_lon, max_lon
-    # e il filtro nodes_in_area_gdf.
-    # Sostituiscilo con:
-    nodes_in_area_gdf = nodes_gdf_geographic.copy() # Usa tutti i nodi dell'area completa
+    # Usa tutti i nodi dell'area completa
+    nodes_in_area_gdf = nodes_gdf_geographic.copy()
 
     if nodes_in_area_gdf.empty:
         print("AVVISO: nodes_gdf_full_area è vuoto. Impossibile generare dati di traffico.")
@@ -517,11 +353,9 @@ def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_
     if pois_gdf is not None and not pois_gdf.empty:
         pois_gdf_geographic = pois_gdf.to_crs("EPSG:4326") if pois_gdf.crs is None or not pois_gdf.crs.is_geographic else pois_gdf.copy()
 
-        # Rimuovi il pre-filtro geografico sui POI (.cx[min_lon:max_lon, min_lat:max_lat])
-        # Ora useremo tutti i POI nell'area di studio.
+        # Uso tutti i POI nell'area
         pois_gdf_filtered_geographic = pois_gdf_geographic.copy()
 
-        # Assicurati che 'original_poi_id' esista (per conteggi unici in caso di MultiIndex)
         if 'original_poi_id' not in pois_gdf_filtered_geographic.columns:
             if isinstance(pois_gdf_filtered_geographic.index, pd.MultiIndex):
                 pois_gdf_filtered_geographic['original_poi_id'] = pois_gdf_filtered_geographic.index.map(str) + '_poi'
@@ -532,7 +366,7 @@ def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_
         pois_gdf_filtered_geographic = gpd.GeoDataFrame(geometry=[], crs="EPSG:4326")
         print("AVVISO: pois_gdf è vuoto o None. Nessun fattore di traffico basato sui POI verrà considerato.")
 
-    # --- 2. Proietta i GeoDataFrame per i calcoli spaziali ---
+    # Proietta i GeoDataFrame per i calcoli spaziali
     # Stima il CRS proiettato dall'intera area per coerenza.
     target_crs_proj = nodes_gdf_geographic.estimate_utm_crs() # Usa nodes_gdf_geographic (l'intera area)
     nodes_gdf_proj = nodes_gdf_geographic.to_crs(target_crs_proj) # Proietta tutti i nodi
@@ -547,10 +381,10 @@ def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_
     )
     nodes_buffered_gdf.index.name = 'osmid'
 
-    # --- 3. Calcola i "punteggi di potenziale di traffico" per ogni nodo ---
+    # Calcola i "punteggi di potenziale traffico" per ogni nodo
     node_traffic_potential = pd.Series(1.0, index=nodes_gdf_proj.index, name='traffic_potential')
 
-    # Aggiungi il contributo della gerarchia stradale
+    # Aggiungo il contributo della gerarchia stradale
     for osmid in nodes_gdf_proj.index:
         highways_touching_node = []
         for neighbor in list(G.neighbors(osmid)) + list(G.predecessors(osmid)):
@@ -579,7 +413,7 @@ def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_
 
     print(f"Punteggio potenziale traffico (strade): Max={node_traffic_potential.max():.2f}, Min={node_traffic_potential.min():.2f}")
 
-    # Aggiungi il contributo dei POI
+    # Aggiungo il contributo dei POI
     if not pois_gdf_proj.empty and not nodes_buffered_gdf.empty:
         sjoin_pois_traffic = gpd.sjoin(pois_gdf_proj, nodes_buffered_gdf, how="inner", predicate="intersects")
 
@@ -634,7 +468,7 @@ def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_
     else:
         sensor_probabilities = node_traffic_potential / total_potential_score
 
-    # --- 4. Seleziona i nodi per i sensori in base alle probabilità di potenziale di traffico ---
+    # Seleziona i nodi per i sensori in base alle probabilità di potenziale traffico
     if not sensor_probabilities.empty and len(nodes_gdf_proj) > 0:
         sampled_sensor_nodes_osmid = random.choices(
             population=nodes_gdf_proj.index.tolist(),
@@ -649,7 +483,7 @@ def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_
     # Mappa gli OSMID dei sensori ai loro punteggi di traffico effettivi
     sensor_node_potential_map = node_traffic_potential.loc[sampled_sensor_nodes_osmid].to_dict()
 
-    # Recupera le geometrie dei nodi dei sensori e riproiettale una volta
+    # Recupera le geometrie dei nodi dei sensori
     sensor_node_geometries_proj = nodes_gdf_proj.loc[sampled_sensor_nodes_osmid].geometry
     sensor_node_geometries_4326 = sensor_node_geometries_proj.to_crs("EPSG:4326")
 
@@ -668,7 +502,7 @@ def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_
     for i, sensor_info in enumerate(chosen_sensors_info):
         sensor_info['IDSensore'] = f"SENSOR_{city_name.upper()}_{i:03d}"
 
-    # --- 5. Genera le letture di traffico per ciascun sensore ---
+    # Genera le letture di traffico per ciascun sensore
     traffic_data = []
     start_date = datetime(2024, 1, 1)
 
@@ -748,161 +582,43 @@ def generate_fake_traffic_data(G, nodes_gdf_full_area, pois_gdf, city_name, num_
     print(f"Generati {len(gdf_traffic_fake)} punti di traffico fittizi.")
     return gdf_traffic_fake
 
-    #####traffic_data = []
-    #####sensor_ids = [f"SENSOR_{city_name.upper()}_{i:03d}" for i in range(num_sensors)]
-#####
-    #####start_date = datetime(2023, 1, 1)
-#####
-    #####for sensor_id in sensor_ids:
-    #####    sensor_lat = np.random.normal(center_lat, lat_std) #/ 5) # Sensori più raggruppati
-    #####    sensor_lon = np.random.normal(center_lon, lon_std) #/ 5)
-#####
-    #####    for reading_idx in range(num_readings_per_sensor):
-    #####        # Data casuale per 2023
-    #####        random_days = np.random.randint(0, 365)
-    #####        reading_date = start_date + timedelta(days=int(random_days))
-#####
-    #####        # Ora casuale
-    #####        reading_hour = np.random.randint(0, 24)
-    #####        reading_minute = np.random.randint(0, 60)
-    #####        reading_time = f"{reading_hour:02d}:{reading_minute:02d}"
-#####
-    #####        # Conteggio veicoli (più alto nelle ore di punta)
-    #####        count_base = np.random.randint(50, 300)
-    #####        if 7 <= reading_hour <= 9 or 17 <= reading_hour <= 19: # Ore di punta
-    #####            count_base = count_base * np.random.uniform(1.5, 2.5)
-#####
-    #####        # Velocità media (più bassa con più traffico)
-    #####        speed_base = np.random.uniform(20, 70)
-    #####        speed = speed_base / (1 + (count_base / 500)) # Più veicoli = meno velocità
-#####
-    #####        # Indice di congestione (più alto con più traffico)
-    #####        congestion_index = 1 - (speed / 70) + (count_base / 1000) * 0.5 # Formula semplice
-    #####        congestion_index = max(0.0, min(1.0, congestion_index)) # Mantiene tra 0 e 1
-#####
-    #####        traffic_data.append({
-    #####            'IDSensore': sensor_id,
-    #####            'Latitudine': sensor_lat,
-    #####            'Longitudine': sensor_lon,
-    #####            'DataRilevamento': reading_date.strftime('%d/%m/%Y'),
-    #####            'OraRilevamento': reading_time,
-    #####            'ConteggioVeicoli': int(count_base),
-    #####            'VelocitaMedia': round(speed, 2),
-    #####            'IndiceCongestione': round(congestion_index, 2)
-    #####        })
-    #####df = pd.DataFrame(traffic_data)
-    #####geometry = gpd.points_from_xy(df['Longitudine'], df['Latitudine']) # Assicurati che questi nomi siano corretti
-    #####gdf_traffic_fake = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
-#####
-    #####print(f"Generati {len(gdf_traffic_fake)} punti di traffico fittizi.")
-#####
-    #####return gdf_traffic_fake
-    #return pd.DataFrame(traffic_data)
 
-# --- Dati per le città (incluse le nuove richieste) ---
-# cities_data = {
-#     "terlizzi_italy": {
-#         "num_accidents": 100, # Città più piccola, meno incidenti
-#         "center_lat": 41.12,
-#         "center_lon": 16.53,
-#         "lat_std": 0.005,
-#         "lon_std": 0.007
-#     },
-#     "bari_italy": {
-#         "num_accidents": 750,
-#         "center_lat": 41.12,
-#         "center_lon": 16.87,
-#         "lat_std": 0.02,
-#         "lon_std": 0.025
-#     },
-#     "taranto_italy": {
-#         "num_accidents": 600,
-#         "center_lat": 40.47,
-#         "center_lon": 17.24,
-#         "lat_std": 0.018,
-#         "lon_std": 0.023
-#     },
-#     "foggia_italy": {
-#         "num_accidents": 550,
-#         "center_lat": 41.46,
-#         "center_lon": 15.54,
-#         "lat_std": 0.017,
-#         "lon_std": 0.022
-#     },
-#     "lecce_italy": {
-#         "num_accidents": 500,
-#         "center_lat": 40.35,
-#         "center_lon": 18.17,
-#         "lat_std": 0.016,
-#         "lon_std": 0.021
-#     }
-# }
-
-#cities_data = {
-#   "terlizzi_italy": {
-#       "num_accidents": 100, "center_lat": 41.12, "center_lon": 16.53, "lat_std": 0.005, "lon_std": 0.007,
-#       "num_traffic_sensors": 10, "readings_per_sensor": 50,
-#       "avg_population_density": 500 # Esempio: città piccola
-#   }#,
-    #"bari_italy": {
-    #    "num_accidents": 750, "center_lat": 41.12, "center_lon": 16.87, "lat_std": 0.02, "lon_std": 0.025,
-    #    "num_traffic_sensors": 50, "readings_per_sensor": 100,
-    #    "avg_population_density": 2500 # Esempio: città di medie dimensioni
-    #},
-    #"taranto_italy": {
-    #    "num_accidents": 600, "center_lat": 40.47, "center_lon": 17.24, "lat_std": 0.018, "lon_std": 0.023,
-    #    "num_traffic_sensors": 40, "readings_per_sensor": 80,
-    #    "avg_population_density": 1800 # Esempio: città media
-    #},
-    #"foggia_italy": {
-    #    "num_accidents": 550, "center_lat": 41.46, "center_lon": 15.54, "lat_std": 0.017, "lon_std": 0.022,
-    #    "num_traffic_sensors": 35, "readings_per_sensor": 70,
-    #    "avg_population_density": 1500 # Esempio: città media
-    #},
-    #"lecce_italy": {
-    #    "num_accidents": 500, "center_lat": 40.35, "center_lon": 18.17, "lat_std": 0.016, "lon_std": 0.021,
-    #    "num_traffic_sensors": 30, "readings_per_sensor": 60,
-    #    "avg_population_density": 1200 # Esempio: città media
-    #}
-#}
-
-
-def generate_all_fake_data ():
-    output_dir = "data"
-
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    for city_key, data in cities_data.items():
-        print(f"Generazione dati per {city_key}...")
-        df_accidents = generate_fake_accidents_data(
-            city_key,
-            data['num_accidents'],
-            data['center_lat'],
-            data['center_lon'],
-            data['lat_std'],
-            data['lon_std']
-        )
-
-        # Costruisci il nome del file in modo da corrispondere a come lo caricheresti in main.py
-        # La parte "Italy" verrà rimossa se la usi in city_name_lower nel main.py,
-        # ma il nome completo va bene per la generazione qui.
-        filepath_accidents = os.path.join(output_dir, f"incidenti_stradali_{city_key}.xlsx")
-        df_accidents.to_excel(filepath_accidents, index=False)
-        print(f"File incidenti salvato: {filepath_accidents}")
-
-        # Genera e salva dati traffico
-        df_traffic = generate_fake_traffic_data(
-            city_key,
-            data['num_traffic_sensors'],
-            data['num_readings_per_sensor'],
-            data['center_lat'],
-            data['center_lon'],
-            data['lat_std'],
-            data['lon_std']
-        )
-        filepath_traffic = os.path.join(output_dir, f"traffic_data_{city_key}.xlsx")
-        df_traffic.to_excel(filepath_traffic, index=False)
-        print(f"File traffico salvato: {filepath_traffic}")
-
-    print("\nGenerazione dei dataset di esempio completata.")
+###def generate_all_fake_data ():
+###    output_dir = "data"
+###
+###    if not os.path.exists(output_dir):
+###        os.makedirs(output_dir)
+###
+###    for city_key, data in cities_data.items():
+###        print(f"Generazione dati per {city_key}...")
+###        df_accidents = generate_fake_accidents_data(
+###            city_key,
+###            data['num_accidents'],
+###            data['center_lat'],
+###            data['center_lon'],
+###            data['lat_std'],
+###            data['lon_std']
+###        )
+###
+###        # Costruisci il nome del file in modo da corrispondere a come lo caricheresti in main.py
+###        # La parte "Italy" verrà rimossa se la usi in city_name_lower nel main.py,
+###        # ma il nome completo va bene per la generazione qui.
+###        filepath_accidents = os.path.join(output_dir, f"incidenti_stradali_{city_key}.xlsx")
+###        df_accidents.to_excel(filepath_accidents, index=False)
+###        print(f"File incidenti salvato: {filepath_accidents}")
+###
+###        # Genera e salva dati traffico
+###        df_traffic = generate_fake_traffic_data(
+###            city_key,
+###            data['num_traffic_sensors'],
+###            data['num_readings_per_sensor'],
+###            data['center_lat'],
+###            data['center_lon'],
+###            data['lat_std'],
+###            data['lon_std']
+###        )
+###        filepath_traffic = os.path.join(output_dir, f"traffic_data_{city_key}.xlsx")
+###        df_traffic.to_excel(filepath_traffic, index=False)
+###        print(f"File traffico salvato: {filepath_traffic}")
+###
+###    print("\nGenerazione dei dataset di esempio completata.")

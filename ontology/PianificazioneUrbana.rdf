@@ -1,0 +1,788 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/gaetano/ontologies/2025/5/untitled-ontology-25/"
+     xml:base="http://www.semanticweb.org/gaetano/ontologies/2025/5/untitled-ontology-25/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:pianificazioneUrbana="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haAttraversamentoPedonaleVicino -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haAttraversamentoPedonaleVicino">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale"/>
+        <rdfs:comment>Un NodoStradale ha un AttraversamentoPedonale nelle sue vicinanze.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haCausa -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haCausa">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente"/>
+        <rdfs:comment>Un IncidenteStradale ha una specifica CausaIncidente.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haCondizioneMeteo -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haCondizioneMeteo">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo"/>
+        <rdfs:comment>Un IncidenteStradale si è verificato sotto una specifica CondizioneMeteo.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haCondizioneTraffico -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haCondizioneTraffico">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico"/>
+        <rdfs:comment>Un NodoStradale ha una specifica CondizioneTraffico in un dato momento/periodo. (Relazionato a avg_conteggio_veicoli, avg_velocita, avg_indice_congestione).</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haGravita -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haGravita">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente"/>
+        <rdfs:comment>Un IncidenteStradale ha una specifica GravitaIncidente.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haPuntoDiInteresseVicino -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haPuntoDiInteresseVicino">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#PuntoDiInteresse"/>
+        <rdfs:comment>Un NodoStradale ha un PuntoDiInteresse situato nelle sue vicinanze.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haTipoVeicoloCoinvolto -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#haTipoVeicoloCoinvolto">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto"/>
+        <rdfs:comment>Un IncidenteStradale ha coinvolto un veicolo di un certo TipoVeicoloCoinvolto.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#occorreVicinoA -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#occorreVicinoA">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:comment>Indica che un IncidenteStradale si è verificato vicino o riguarda un particolare NodoStradale.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasConteggioVeicoli -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasConteggioVeicoli">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Il conteggio dei veicoli per questa condizione di traffico.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasData -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasData">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>La data dell&apos;incidente.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasGradoIncrocio -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasGradoIncrocio">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incrocio"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Il grado topologico dell&apos;incrocio.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasGravitaMediaIncidente -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasGravitaMediaIncidente">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>La gravità media degli incidenti storici vicini al nodo.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasIndiceCongestione -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasIndiceCongestione">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>L&apos;indice di congestione per questa condizione di traffico.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasIndiceRischio -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasIndiceRischio">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>Un indice sintetico del rischio calcolato per il nodo.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasLatitudine -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasLatitudine">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>La latitudine geografica dell&apos;entità.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasLongitudine -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasLongitudine">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>La longitudine geografica dell&apos;entità.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasNumAttraversamentiPedonaliVicini -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasNumAttraversamentiPedonaliVicini">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Numero di attraversamenti pedonali vicini al nodo.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasNumIncidentiVicini -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasNumIncidentiVicini">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Il numero storico di incidenti avvenuti vicino al nodo.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasNumNegoziVicini -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasNumNegoziVicini">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Numero di negozi vicini al nodo.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasNumPoisVicini -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasNumPoisVicini">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Numero di Punti di Interesse vicini al nodo.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasNumScuoleVicini -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasNumScuoleVicini">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Numero di scuole vicine al nodo.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasOra -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasOra">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>L&apos;ora dell&apos;incidente.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasOsmid -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasOsmid">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>L&apos;identificatore OpenStreetMap del nodo.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasProbabilitaRischioPredetta -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasProbabilitaRischioPredetta">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>La probabilità di rischio di incidente predetta dal modello ML per il nodo.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasRischioIncidente -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasRischioIncidente">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Indica se il nodo è stato etichettato come &quot;a rischio&quot; in base a vari fattori.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasVelocitaMedia -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasVelocitaMedia">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:comment>La velocità media per questa condizione di traffico.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale"/>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente"/>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo"/>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico"/>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente"/>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incrocio -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incrocio">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#PuntoDiInteresse"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Ospedale -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Ospedale">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#PuntoDiInteresse"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#PuntoDiInteresse -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#PuntoDiInteresse"/>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#PuntoDiInteresse"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale_CorsoItalia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale_CorsoItalia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale_ViaRoma -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale_ViaRoma">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_CondizioniStradali -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_CondizioniStradali">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_Distrazione -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_Distrazione">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_GuidaSottoEffettoSostanze -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_GuidaSottoEffettoSostanze">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_MancanzaPrecedenza -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_MancanzaPrecedenza">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_MancatoRispettoStop -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_MancatoRispettoStop">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_VelocitaEccessiva -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_VelocitaEccessiva">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Nebbia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Nebbia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Neve -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Neve">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Pioggia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Pioggia">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Sereno -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Sereno">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico_15_06_2024_Ore_8_00 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico_15_06_2024_Ore_8_00">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico_Congestionato -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico_Congestionato">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico_Fluido -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico_Fluido">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico_Lento -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico_Lento">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Grave -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Grave">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Lieve -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Lieve">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Moderato -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Moderato">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Mortale -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Mortale">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incidente_2024_05_10_18_30_ID_GHI -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incidente_2024_05_10_18_30_ID_GHI">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <pianificazioneUrbana:haCausa rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_MancanzaPrecedenza"/>
+        <pianificazioneUrbana:haCondizioneMeteo rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Nebbia"/>
+        <pianificazioneUrbana:haGravita rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Lieve"/>
+        <pianificazioneUrbana:haTipoVeicoloCoinvolto rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Bicicletta"/>
+        <pianificazioneUrbana:occorreVicinoA rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_CorsoVittorio_PassaggioPedonale"/>
+        <pianificazioneUrbana:hasData>10-05-2024</pianificazioneUrbana:hasData>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.118</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.920</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasOra>18:30:00</pianificazioneUrbana:hasOra>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incidente_2024_06_15_09_30_ID_ABC -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incidente_2024_06_15_09_30_ID_ABC">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <pianificazioneUrbana:haCausa rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_Distrazione"/>
+        <pianificazioneUrbana:haCondizioneMeteo rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Pioggia"/>
+        <pianificazioneUrbana:haGravita rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Grave"/>
+        <pianificazioneUrbana:haTipoVeicoloCoinvolto rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Automobile"/>
+        <pianificazioneUrbana:occorreVicinoA rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_OSMID_12345"/>
+        <pianificazioneUrbana:hasData>15-06-2024</pianificazioneUrbana:hasData>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.112</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.913</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasOra>09:30:00</pianificazioneUrbana:hasOra>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incidente_2024_06_20_14_00_ID_DEF -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incidente_2024_06_20_14_00_ID_DEF">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <pianificazioneUrbana:haCausa rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_VelocitaEccessiva"/>
+        <pianificazioneUrbana:haCondizioneMeteo rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Sereno"/>
+        <pianificazioneUrbana:haGravita rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Mortale"/>
+        <pianificazioneUrbana:haTipoVeicoloCoinvolto rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Moto"/>
+        <pianificazioneUrbana:occorreVicinoA rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_PiazzaDuomo_Rotatoria"/>
+        <pianificazioneUrbana:hasData>20-06-2024</pianificazioneUrbana:hasData>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.110</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.905</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasOra>14:00:00</pianificazioneUrbana:hasOra>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incidente_2024_12_01_08_00_ID_JKL -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incidente_2024_12_01_08_00_ID_JKL">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
+        <pianificazioneUrbana:haCausa rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CausaIncidente_CondizioniStradali"/>
+        <pianificazioneUrbana:haCondizioneMeteo rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneMeteo_Neve"/>
+        <pianificazioneUrbana:haGravita rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#GravitaIncidente_Moderato"/>
+        <pianificazioneUrbana:haTipoVeicoloCoinvolto rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Furgone"/>
+        <pianificazioneUrbana:occorreVicinoA rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_ViaRoma_Incrocio1"/>
+        <pianificazioneUrbana:hasData>01-12-2024</pianificazioneUrbana:hasData>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.112</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.913</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasOra>08:00:00</pianificazioneUrbana:hasOra>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio_Alimentari -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio_Alimentari">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio"/>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.114</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.916</pianificazioneUrbana:hasLongitudine>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_CorsoVittorio_PassaggioPedonale -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_CorsoVittorio_PassaggioPedonale">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Parco_Centrale"/>
+        <pianificazioneUrbana:hasGradoIncrocio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2</pianificazioneUrbana:hasGradoIncrocio>
+        <pianificazioneUrbana:hasIndiceRischio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.3</pianificazioneUrbana:hasIndiceRischio>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.118</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.920</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1</pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini>
+        <pianificazioneUrbana:hasOsmid rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">11223</pianificazioneUrbana:hasOsmid>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_OSMID_12345 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_OSMID_12345">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <pianificazioneUrbana:haCondizioneTraffico rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#CondizioneTraffico_15_06_2024_Ore_8_00"/>
+        <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio_Alimentari"/>
+        <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola_Galilei"/>
+        <pianificazioneUrbana:hasGradoIncrocio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1</pianificazioneUrbana:hasGradoIncrocio>
+        <pianificazioneUrbana:hasGravitaMediaIncidente rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.1</pianificazioneUrbana:hasGravitaMediaIncidente>
+        <pianificazioneUrbana:hasIndiceRischio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.70</pianificazioneUrbana:hasIndiceRischio>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.112</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.893</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2</pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini>
+        <pianificazioneUrbana:hasNumIncidentiVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">5</pianificazioneUrbana:hasNumIncidentiVicini>
+        <pianificazioneUrbana:hasNumNegoziVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4</pianificazioneUrbana:hasNumNegoziVicini>
+        <pianificazioneUrbana:hasNumPoisVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">10</pianificazioneUrbana:hasNumPoisVicini>
+        <pianificazioneUrbana:hasNumScuoleVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2</pianificazioneUrbana:hasNumScuoleVicini>
+        <pianificazioneUrbana:hasOsmid rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12345</pianificazioneUrbana:hasOsmid>
+        <pianificazioneUrbana:hasProbabilitaRischioPredetta rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.85</pianificazioneUrbana:hasProbabilitaRischioPredetta>
+        <pianificazioneUrbana:hasRischioIncidente rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1</pianificazioneUrbana:hasRischioIncidente>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_PiazzaDuomo_Rotatoria -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_PiazzaDuomo_Rotatoria">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <pianificazioneUrbana:haAttraversamentoPedonaleVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale_CorsoItalia"/>
+        <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Ospedale_Civile"/>
+        <pianificazioneUrbana:hasGradoIncrocio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">5</pianificazioneUrbana:hasGradoIncrocio>
+        <pianificazioneUrbana:hasIndiceRischio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9</pianificazioneUrbana:hasIndiceRischio>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.110</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.905</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3</pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini>
+        <pianificazioneUrbana:hasOsmid rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">67890</pianificazioneUrbana:hasOsmid>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_ViaRoma_Incrocio1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_ViaRoma_Incrocio1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Incrocio"/>
+        <pianificazioneUrbana:haAttraversamentoPedonaleVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale_ViaRoma"/>
+        <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio_Alimentari"/>
+        <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola_Galilei"/>
+        <pianificazioneUrbana:hasGradoIncrocio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4</pianificazioneUrbana:hasGradoIncrocio>
+        <pianificazioneUrbana:hasIndiceRischio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7</pianificazioneUrbana:hasIndiceRischio>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.112</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.913</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2</pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini>
+        <pianificazioneUrbana:hasOsmid rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">123</pianificazioneUrbana:hasOsmid>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Ospedale_Civile -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Ospedale_Civile">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Ospedale"/>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.110</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.910</pianificazioneUrbana:hasLongitudine>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Parco_Centrale -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Parco_Centrale">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#PuntoDiInteresse"/>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.116</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.912</pianificazioneUrbana:hasLongitudine>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola_Galilei -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola_Galilei">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola"/>
+        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.115</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.918</pianificazioneUrbana:hasLongitudine>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Automobile -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Automobile">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Bicicletta -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Bicicletta">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Camion -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Camion">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Furgone -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Furgone">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Moto -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Moto">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+

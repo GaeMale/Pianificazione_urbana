@@ -147,7 +147,7 @@
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasGravitaMediaIncidente">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:comment>La gravità media degli incidenti storici vicini al nodo.</rdfs:comment>
     </owl:DatatypeProperty>
     
@@ -167,7 +167,7 @@
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasIndiceRischio">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:comment>Un indice sintetico del rischio calcolato per il nodo.</rdfs:comment>
     </owl:DatatypeProperty>
     
@@ -176,9 +176,8 @@
     <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasLatitudine -->
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasLatitudine">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:comment>La latitudine geografica dell&apos;entità.</rdfs:comment>
     </owl:DatatypeProperty>
     
@@ -187,9 +186,8 @@
     <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasLongitudine -->
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasLongitudine">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#IncidenteStradale"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:comment>La longitudine geografica dell&apos;entità.</rdfs:comment>
     </owl:DatatypeProperty>
     
@@ -258,7 +256,9 @@
     <!-- http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasOsmid -->
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasOsmid">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#PuntoDiInteresse"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
         <rdfs:comment>L&apos;identificatore OpenStreetMap del nodo.</rdfs:comment>
     </owl:DatatypeProperty>
@@ -269,7 +269,7 @@
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#hasProbabilitaRischioPredetta">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:comment>La probabilità di rischio di incidente predetta dal modello ML per il nodo.</rdfs:comment>
     </owl:DatatypeProperty>
     
@@ -573,8 +573,8 @@
         <pianificazioneUrbana:haTipoVeicoloCoinvolto rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Bicicletta"/>
         <pianificazioneUrbana:occorreVicinoA rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_CorsoVittorio_PassaggioPedonale"/>
         <pianificazioneUrbana:hasData>10-05-2024</pianificazioneUrbana:hasData>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.118</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.920</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasLatitudine>41.118</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.920</pianificazioneUrbana:hasLongitudine>
         <pianificazioneUrbana:hasOra>18:30:00</pianificazioneUrbana:hasOra>
     </owl:NamedIndividual>
     
@@ -590,8 +590,8 @@
         <pianificazioneUrbana:haTipoVeicoloCoinvolto rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Automobile"/>
         <pianificazioneUrbana:occorreVicinoA rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_OSMID_12345"/>
         <pianificazioneUrbana:hasData>15-06-2024</pianificazioneUrbana:hasData>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.112</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.913</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasLatitudine>41.112</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.913</pianificazioneUrbana:hasLongitudine>
         <pianificazioneUrbana:hasOra>09:30:00</pianificazioneUrbana:hasOra>
     </owl:NamedIndividual>
     
@@ -607,8 +607,8 @@
         <pianificazioneUrbana:haTipoVeicoloCoinvolto rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Moto"/>
         <pianificazioneUrbana:occorreVicinoA rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_PiazzaDuomo_Rotatoria"/>
         <pianificazioneUrbana:hasData>20-06-2024</pianificazioneUrbana:hasData>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.110</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.905</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasLatitudine>41.110</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.905</pianificazioneUrbana:hasLongitudine>
         <pianificazioneUrbana:hasOra>14:00:00</pianificazioneUrbana:hasOra>
     </owl:NamedIndividual>
     
@@ -624,8 +624,8 @@
         <pianificazioneUrbana:haTipoVeicoloCoinvolto rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#TipoVeicoloCoinvolto_Furgone"/>
         <pianificazioneUrbana:occorreVicinoA rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale_ViaRoma_Incrocio1"/>
         <pianificazioneUrbana:hasData>01-12-2024</pianificazioneUrbana:hasData>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.112</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.913</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasLatitudine>41.112</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.913</pianificazioneUrbana:hasLongitudine>
         <pianificazioneUrbana:hasOra>08:00:00</pianificazioneUrbana:hasOra>
     </owl:NamedIndividual>
     
@@ -635,8 +635,8 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio_Alimentari">
         <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio"/>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.114</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.916</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasLatitudine>41.114</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.916</pianificazioneUrbana:hasLongitudine>
     </owl:NamedIndividual>
     
 
@@ -647,9 +647,9 @@
         <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#NodoStradale"/>
         <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Parco_Centrale"/>
         <pianificazioneUrbana:hasGradoIncrocio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2</pianificazioneUrbana:hasGradoIncrocio>
-        <pianificazioneUrbana:hasIndiceRischio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.3</pianificazioneUrbana:hasIndiceRischio>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.118</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.920</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasIndiceRischio>0.3</pianificazioneUrbana:hasIndiceRischio>
+        <pianificazioneUrbana:hasLatitudine>41.118</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.920</pianificazioneUrbana:hasLongitudine>
         <pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1</pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini>
         <pianificazioneUrbana:hasOsmid rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">11223</pianificazioneUrbana:hasOsmid>
     </owl:NamedIndividual>
@@ -664,17 +664,17 @@
         <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio_Alimentari"/>
         <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola_Galilei"/>
         <pianificazioneUrbana:hasGradoIncrocio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1</pianificazioneUrbana:hasGradoIncrocio>
-        <pianificazioneUrbana:hasGravitaMediaIncidente rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.1</pianificazioneUrbana:hasGravitaMediaIncidente>
-        <pianificazioneUrbana:hasIndiceRischio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.70</pianificazioneUrbana:hasIndiceRischio>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.112</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.893</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasGravitaMediaIncidente>2.1</pianificazioneUrbana:hasGravitaMediaIncidente>
+        <pianificazioneUrbana:hasIndiceRischio>0.70</pianificazioneUrbana:hasIndiceRischio>
+        <pianificazioneUrbana:hasLatitudine>41.112</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.893</pianificazioneUrbana:hasLongitudine>
         <pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2</pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini>
         <pianificazioneUrbana:hasNumIncidentiVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">5</pianificazioneUrbana:hasNumIncidentiVicini>
         <pianificazioneUrbana:hasNumNegoziVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4</pianificazioneUrbana:hasNumNegoziVicini>
         <pianificazioneUrbana:hasNumPoisVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">10</pianificazioneUrbana:hasNumPoisVicini>
         <pianificazioneUrbana:hasNumScuoleVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2</pianificazioneUrbana:hasNumScuoleVicini>
         <pianificazioneUrbana:hasOsmid rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12345</pianificazioneUrbana:hasOsmid>
-        <pianificazioneUrbana:hasProbabilitaRischioPredetta rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.85</pianificazioneUrbana:hasProbabilitaRischioPredetta>
+        <pianificazioneUrbana:hasProbabilitaRischioPredetta>0.85</pianificazioneUrbana:hasProbabilitaRischioPredetta>
         <pianificazioneUrbana:hasRischioIncidente rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1</pianificazioneUrbana:hasRischioIncidente>
     </owl:NamedIndividual>
     
@@ -687,9 +687,9 @@
         <pianificazioneUrbana:haAttraversamentoPedonaleVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#AttraversamentoPedonale_CorsoItalia"/>
         <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Ospedale_Civile"/>
         <pianificazioneUrbana:hasGradoIncrocio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">5</pianificazioneUrbana:hasGradoIncrocio>
-        <pianificazioneUrbana:hasIndiceRischio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9</pianificazioneUrbana:hasIndiceRischio>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.110</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.905</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasIndiceRischio>0.9</pianificazioneUrbana:hasIndiceRischio>
+        <pianificazioneUrbana:hasLatitudine>41.110</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.905</pianificazioneUrbana:hasLongitudine>
         <pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3</pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini>
         <pianificazioneUrbana:hasOsmid rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">67890</pianificazioneUrbana:hasOsmid>
     </owl:NamedIndividual>
@@ -704,9 +704,9 @@
         <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Negozio_Alimentari"/>
         <pianificazioneUrbana:haPuntoDiInteresseVicino rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola_Galilei"/>
         <pianificazioneUrbana:hasGradoIncrocio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4</pianificazioneUrbana:hasGradoIncrocio>
-        <pianificazioneUrbana:hasIndiceRischio rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7</pianificazioneUrbana:hasIndiceRischio>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.112</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.913</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasIndiceRischio>0.7</pianificazioneUrbana:hasIndiceRischio>
+        <pianificazioneUrbana:hasLatitudine>41.112</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.913</pianificazioneUrbana:hasLongitudine>
         <pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2</pianificazioneUrbana:hasNumAttraversamentiPedonaliVicini>
         <pianificazioneUrbana:hasOsmid rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">123</pianificazioneUrbana:hasOsmid>
     </owl:NamedIndividual>
@@ -717,8 +717,8 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Ospedale_Civile">
         <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Ospedale"/>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.110</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.910</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasLatitudine>41.110</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.910</pianificazioneUrbana:hasLongitudine>
     </owl:NamedIndividual>
     
 
@@ -727,8 +727,8 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Parco_Centrale">
         <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#PuntoDiInteresse"/>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.116</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.912</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasLatitudine>41.116</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.912</pianificazioneUrbana:hasLongitudine>
     </owl:NamedIndividual>
     
 
@@ -737,8 +737,8 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola_Galilei">
         <rdf:type rdf:resource="http://www.semanticweb.org/gaetano/ontologies/2025/6/pianificazioneUrbana#Scuola"/>
-        <pianificazioneUrbana:hasLatitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">41.115</pianificazioneUrbana:hasLatitudine>
-        <pianificazioneUrbana:hasLongitudine rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.918</pianificazioneUrbana:hasLongitudine>
+        <pianificazioneUrbana:hasLatitudine>41.115</pianificazioneUrbana:hasLatitudine>
+        <pianificazioneUrbana:hasLongitudine>16.918</pianificazioneUrbana:hasLongitudine>
     </owl:NamedIndividual>
     
 

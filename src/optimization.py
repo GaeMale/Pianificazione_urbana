@@ -81,7 +81,7 @@ def recommend_interventions(scored_df):
 
         # Esempio di logica per le raccomandazioni
         recommendation_text = ""
-        if score >= 0.75: # Esempio: score da 0.75 a 1.0 (o oltre) è Alta
+        if score >= 0.8: # Esempio: score da 0.8 a 1.0 (o oltre) è Alta
             priority_category = "Priorità Alta"
             if num_inc > 3 and avg_sev > 2: # Molti incidenti, alta gravità
                 recommendation_text = "AZIONI URGENTI: Riprogettazione complessiva dell'intersezione, installazione/aggiornamento semafori intelligenti, revisione drastica dei limiti di velocità e controlli rafforzati. Considerare interventi di moderazione del traffico."
@@ -90,7 +90,7 @@ def recommend_interventions(scored_df):
             else: # Rischio calcolato alto ma senza incidenti storici
                 recommendation_text = "ALTA PRIORITÀ (PREVENTIVA): Monitoraggio approfondito dei comportamenti di guida e dei flussi di traffico. Indagine per identificare anomalie latenti nel design stradale o nel contesto urbano che generano alto rischio teorico."
 
-        elif score >= 0.5: # Esempio: score da 0.5 a <0.75 è Medio
+        elif score >= 0.5: # Esempio: score da 0.5 a <0.8 è Medio
             priority_category = "Priorità Media"
             if num_inc > 0: # Incidenti presenti
                 recommendation_text = "PRIORITÀ MEDIA: Interventi di miglioramento della segnaletica (anche luminosa), potenziamento dell'illuminazione pubblica, analisi punti ciechi e visibilità per utenti vulnerabili (pedoni, ciclisti)."

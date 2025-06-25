@@ -9,6 +9,7 @@ RISK_THRESHOLD_AVG_SEVERITY = 2.5 # Su una scala di gravità
 # Soglie per la prossimità dei POI
 POI_PROXIMITY_RADIUS_METERS = 300 # Raggio di ricerca per POI vicini a un nodo OSM
 
+
 def aggregate_traffic_to_osm_elements(gdf_traffic_processed, G):
     """
     Aggrega i dati di traffico (reali o fittizi) ai nodi OSM.
@@ -48,8 +49,9 @@ def aggregate_traffic_to_osm_elements(gdf_traffic_processed, G):
     # Converti osmid in indice per coerenza con altri GeoDataFrame/DataFrame
     aggregated_df = aggregated_df.set_index('osmid')
 
-    print(f"Aggregazione traffico completata. {len(aggregated_df)} nodi OSM con dati di traffico.")
+    print(f"Aggregazione traffico completata. {len(aggregated_df)} nodi OSM con dati di traffico.\n")
     return aggregated_df
+
 
 def aggregate_features_by_node(nodes_features_gdf, incidents_gdf, traffic_aggregated_df, pois_gdf, buffer_distance=100):
     """
@@ -75,7 +77,7 @@ def aggregate_features_by_node(nodes_features_gdf, incidents_gdf, traffic_aggreg
     if final_features_df.crs.is_geographic:
         # Usa il CRS UTM stimato dal centroide per coerenza
         target_crs_proj = final_features_df.estimate_utm_crs()
-        print(f"CRS target stimato: {target_crs_proj.to_string()}")
+        #print(f"CRS target stimato: {target_crs_proj.to_string()}")
     else:
         target_crs_proj = final_features_df.crs # Se è già proiettato, usa quello
 
@@ -89,7 +91,7 @@ def aggregate_features_by_node(nodes_features_gdf, incidents_gdf, traffic_aggreg
         pois_gdf['original_poi_id'] = pois_gdf.index
         pois_gdf = pois_gdf.to_crs(target_crs_proj)
 
-    print(f"GeoDataFrame convertiti al CRS proiettato: {target_crs_proj.to_string()}")
+    #print(f"GeoDataFrame convertiti al CRS proiettato: {target_crs_proj.to_string()}")
 
     if final_features_df.index.name != 'osmid':
         if 'osmid' in final_features_df.columns:
@@ -185,9 +187,9 @@ def aggregate_features_by_node(nodes_features_gdf, incidents_gdf, traffic_aggreg
                 print("Nessun POI commerciale trovato dopo il filtraggio o colonna 'original_poi_id' mancante. 'num_negozi_vicini' rimane zero.")
 
             print(f"Feature POI aggregate. Nodi con POI vicini: {final_features_df['num_pois_vicini'].astype(bool).sum()}")
-            print(f"Nodi con attraversamenti pedonali vicini: {final_features_df['num_attraversamenti_pedonali_vicini'].astype(bool).sum()}")
-            print(f"Nodi con scuole vicine: {final_features_df['num_scuole_vicine'].astype(bool).sum()}")
-            print(f"Nodi con negozi/attività commerciali vicine: {final_features_df['num_negozi_vicini'].astype(bool).sum()}")
+            #print(f"Nodi con attraversamenti pedonali vicini: {final_features_df['num_attraversamenti_pedonali_vicini'].astype(bool).sum()}")
+            #print(f"Nodi con scuole vicine: {final_features_df['num_scuole_vicine'].astype(bool).sum()}")
+            #print(f"Nodi con negozi/attività commerciali vicine: {final_features_df['num_negozi_vicini'].astype(bool).sum()}")
         else:
             print("Nessuna intersezione tra POI e nodi bufferizzati. 'num_pois_vicini' e le feature per amenity rimangono a zero.")
     else:
@@ -255,6 +257,7 @@ def aggregate_features_by_node(nodes_features_gdf, incidents_gdf, traffic_aggreg
 
     print("Tutte le feature aggregate con successo per i nodi OSM.")
     return final_features_df
+
 
 def calculate_incident_severity_features(nodes_features_gdf, incidents_gdf, buffer_distance=100):
     """

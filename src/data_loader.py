@@ -7,7 +7,7 @@ def load_road_network(filepath="data/rete_stradale.graphml"):
     """Carica la rete stradale da un file GraphML."""
     try:
         G = ox.load_graphml(filepath)
-        print(f"Caricata la rete stradale da {filepath}")
+        print("Caricamento effettuato con successo!")
         return G
     except FileNotFoundError:
         print(f"Errore: File della rete stradale non trovato in {filepath}. Eseguire lo script di acquisizione OSMnx.")
@@ -18,7 +18,7 @@ def load_pois(filepath="data/punti_interesse.geojson"):
     """Carica i Punti di Interesse (POI) da un file GeoJSON."""
     try:
         pois_gdf = gpd.read_file(filepath)
-        print(f"Caricati i POI da {filepath}")
+        print("Caricamento effettuato con successo!")
         return pois_gdf
     except FileNotFoundError:
         print(f"Errore: File POI non trovato in {filepath}. Eseguire lo script di acquisizione OSMnx.")

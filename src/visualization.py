@@ -109,7 +109,7 @@ def plot_recommendations_on_map(G, recommendations_df, filepath="reports/recomme
 
     try:
         webbrowser.open(f'file://{os.path.abspath(filepath)}')
-        print(f"Apertura della mappa delle raccomandazioni nel browser: {os.path.abspath(filepath)}")
+        print("Apertura della mappa delle raccomandazioni nel browser...")
     except Exception as e:
         print(f"Impossibile aprire automaticamente la mappa nel browser: {e}")
 
@@ -244,10 +244,10 @@ def plot_osm_data_on_map(G, pois_gdf, filepath="reports/osm_data_map.html"):
     folium.LayerControl().add_to(m)
 
     m.save(filepath)
-    print(f"Mappa interattiva dei dati OSM salvata in  {filepath}")
+    print(f"Mappa interattiva dei dati OSM salvata in {filepath}")
 
     try:
         webbrowser.open(f'file://{os.path.abspath(filepath)}')
-        print(f"Apertura della mappa dei dati OSM nel browser: {os.path.abspath(filepath)}")
+        print("Apertura della mappa dei dati OSM nel browser...")
     except Exception as e:
         print(f"Impossibile aprire automaticamente la mappa nel browser: {e}")

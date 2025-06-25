@@ -1,4 +1,5 @@
 #I dati si riferiscono all'anno
+
 cities_data = {
     "terlizzi_italy": {
         "num_accidents": 200, #100

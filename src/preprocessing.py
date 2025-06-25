@@ -8,23 +8,6 @@ from sklearn.preprocessing import OneHotEncoder
 import osmnx as ox
 
 
-###def load_accidents(filepath):
-###    """Carica i dati degli incidenti da un file Excel."""
-###    if not os.path.exists(filepath):
-###        print(f"File dati incidenti non trovato: {filepath}")
-###        return None
-###    try:
-###        df = pd.read_excel(filepath)
-###        print(f"Dati incidenti caricati da {filepath}: {len(df)} righe.")
-###        if df.empty:
-###            print("Il file dei dati incidenti è vuoto.")
-###            return None
-###        return df
-###    except Exception as e:
-###        print(f"Errore durante il caricamento del file dati incidenti {filepath}: {e}")
-###        return None
-
-
 def preprocess_accidents(df_accidents):
     """
     Pre-processa il DataFrame degli incidenti stradali:
@@ -156,7 +139,7 @@ def get_node_edge_features_from_osm(G, pois_gdf):
     - Features sui nodi (incroci): grado, presenza di POI vicini.
     - Features sugli edge (segmenti stradali): lunghezza, tipo di strada, limiti di velocità, presenza di ciclabili/marciapiedi.
     """
-    print("Estrazione features dal grafo OSM...")
+    print("\nEstrazione features dal grafo OSM...")
     nodes_gdf, edges_gdf = ox.graph_to_gdfs(G)
 
     # Funzione per pulire i valori di 'lanes'
@@ -238,7 +221,7 @@ def get_node_edge_features_from_osm(G, pois_gdf):
         # Se la colonna 'cycleway' non esiste, assumiamo che non ci siano piste ciclabili
         edges_gdf['ha_pista_ciclabile'] = 0
 
-    # Imputa limite di velocità medio (es. 50 km/h in area urbana) se mancante
+    # Imposta limite di velocità medio (es. 50 km/h in area urbana) se mancante
     def parse_maxspeed(speed_val):
         if isinstance(speed_val, list):
             speed_val = speed_val[0] # Prende il primo se è una lista
@@ -248,7 +231,7 @@ def get_node_edge_features_from_osm(G, pois_gdf):
             return np.nan # Ritorna NaN se non può essere convertito
 
     edges_gdf['limite_velocita'] = edges_gdf['maxspeed'].apply(parse_maxspeed)
-    edges_gdf['limite_velocita'] = edges_gdf['limite_velocita'].fillna(50) # Imputa 50 se NaN dopo la conversione
+    edges_gdf['limite_velocita'] = edges_gdf['limite_velocita'].fillna(50) # Imposta 50 se NaN dopo la conversione
 
     # Filtra e seleziona colonne pertinenti per il modello
     nodes_features = nodes_gdf[['grado_incrocio', 'geometry']].copy()

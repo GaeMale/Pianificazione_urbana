@@ -17,6 +17,7 @@ networkx==3.5
 numpy==2.3.1
 openpyxl==3.1.5
 osmnx==2.0.4
+owlready2==0.48
 packaging==25.0
 pandas==2.3.0
 pillow==11.2.1

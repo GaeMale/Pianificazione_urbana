@@ -192,11 +192,6 @@ def get_node_edge_features_from_osm(G, pois_gdf):
     # Caratteristiche dei nodi (incroci)
     nodes_gdf['grado_incrocio'] = nodes_gdf.index.map(G.degree) # Numero di strade che si connettono all'incrocio
 
-    # Identifica semafori e strisce pedonali esistenti dai POI
-    ###if pois_gdf is not None and not pois_gdf.empty:
-    ###    semafori_esistenti = pois_gdf[pois_gdf['highway'] == 'traffic_signals']
-    ###    strisce_esistenti = pois_gdf[pois_gdf['highway'] == 'crossing']
-
     # Caratteristiche degli edge (segmenti stradali)
     edges_gdf['lunghezza_m'] = edges_gdf['length']
     # Gestisce il caso in cui 'highway' è una lista (es. ['primary', 'motorway'])

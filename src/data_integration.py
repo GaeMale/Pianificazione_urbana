@@ -2,19 +2,12 @@ import geopandas as gpd
 import pandas as pd
 import osmnx as ox
 
-# Queste soglie sono usate per definire un incrocio ad "alto rischio" nel target dei modelli.
-RISK_THRESHOLD_NUM_ACCIDENTS = 3
-RISK_THRESHOLD_AVG_SEVERITY = 2.5 # Su una scala di gravità
-
-# Soglie per la prossimità dei POI
-POI_PROXIMITY_RADIUS_METERS = 300 # Raggio di ricerca per POI vicini a un nodo OSM
-
 
 def aggregate_traffic_to_osm_elements(gdf_traffic_processed, G):
     """
     Aggrega i dati di traffico (reali o fittizi) ai nodi OSM.
     """
-    print("Aggregazione dati traffico ai nodi OSM...")
+    print("\nAggregazione dati traffico ai nodi OSM...")
 
     # Estrai i nodi del grafo come GeoDataFrame per le query spaziali
     nodes_gdf = ox.graph_to_gdfs(G, edges=False)
@@ -121,12 +114,12 @@ def aggregate_features_by_node(nodes_features_gdf, incidents_gdf, traffic_aggreg
         if not sjoin_incidents.empty:
             incident_counts = sjoin_incidents.groupby('osmid').size()
             final_features_df['num_incidenti_vicini'] = final_features_df['num_incidenti_vicini'].add(incident_counts, fill_value=0)
-            print(f"Feature incidenti aggregate. Nodi con incidenti vicini: {final_features_df['num_incidenti_vicini'].astype(bool).sum()}")
+            print(f"\nFeature incidenti aggregate. Nodi con incidenti vicini: {final_features_df['num_incidenti_vicini'].astype(bool).sum()}")
         else:
-            print("Nessuna intersezione tra incidenti e nodi bufferizzati. 'num_incidenti_vicini' rimane a zero.")
+            print("\nNessuna intersezione tra incidenti e nodi bufferizzati. 'num_incidenti_vicini' rimane a zero.")
 
     else:
-        print("Nessun dato incidenti da aggregare. 'num_incidenti_vicini' rimane a zero.")
+        print("\nNessun dato incidenti da aggregare. 'num_incidenti_vicini' rimane a zero.")
 
     # Aggregazione dei Dati POI per Nodo
     # Inizializza le colonne POI a 0
@@ -240,7 +233,6 @@ def aggregate_features_by_node(nodes_features_gdf, incidents_gdf, traffic_aggreg
             final_features_df['ora_del_giorno'] = 0
         if 'giorno_della_settimana' not in final_features_df.columns:
             final_features_df['giorno_della_settimana'] = 0
-
 
     # Pulizia Finale e Selezione delle Colonne per il Modello
     # Rimuovo la colonna 'geometry' e altre colonne non numeriche non necessarie per il modello

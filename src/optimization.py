@@ -32,7 +32,6 @@ def score_candidate_locations(df):
     # La somma dei pesi dovrebbe essere 1.0 (o si dovrebbe normalizzare il risultato finale)
 
     # Normalizzazione delle feature tramite ranking
-
     required_columns = [
         'grado_incrocio', 'num_incidenti_vicini', 'num_pois_vicini',
         'num_attraversamenti_pedonali_vicini', 'num_scuole_vicine', 'num_negozi_vicini',
@@ -81,7 +80,7 @@ def recommend_interventions(scored_df):
 
         # Esempio di logica per le raccomandazioni
         recommendation_text = ""
-        if score >= 0.8: # Esempio: score da 0.8 a 1.0 (o oltre) è Alta
+        if score >= 0.8: # Esempio: score da 0.8 a 1.0 è Alta
             priority_category = "Priorità Alta"
             if num_inc > 3 and avg_sev > 2: # Molti incidenti, alta gravità
                 recommendation_text = "AZIONI URGENTI: Riprogettazione complessiva dell'intersezione, installazione/aggiornamento semafori intelligenti, revisione drastica dei limiti di velocità e controlli rafforzati. Considerare interventi di moderazione del traffico."

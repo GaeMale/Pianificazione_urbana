@@ -1,5 +1,4 @@
 import os
-import sys
 
 import osmnx as ox
 import folium
@@ -7,16 +6,11 @@ import folium.plugins
 import pandas as pd
 import geopandas as gpd
 
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
 import joblib
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split, StratifiedKFold
+from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
 
 from src.data_loader import (
     load_road_network,
@@ -44,9 +38,9 @@ from sklearn.metrics import (
     roc_auc_score,
     f1_score,
     precision_score,
-    recall_score, accuracy_score, confusion_matrix, roc_curve, average_precision_score, balanced_accuracy_score,
-    matthews_corrcoef, precision_recall_curve
+    recall_score, accuracy_score, confusion_matrix
 )
+
 
 # Funzione ausiliaria per la gestione del pathfile
 def get_city_file_path(city_name, file_type):
@@ -57,6 +51,7 @@ def get_city_file_path(city_name, file_type):
     elif file_type == 'geojson_pois':
         return os.path.join("data", f"{safe_city_name}_pois.geojson")
     return None
+
 
 def main():
     print("\n --------------------------------------------------")
@@ -107,13 +102,13 @@ def main():
             G = ox.graph_from_place(city_name, network_type="drive", simplify=True, retain_all=False)
             nodes_gdf, edges_gdf = ox.graph_to_gdfs(G)
             ox.save_graphml(G, filepath=graphml_filepath)
-            print(f"Rete stradale per '{city_name}' salvata in {graphml_filepath}")
+            print(f"Rete stradale per '{city_name}' salvata in: {graphml_filepath}.")
         except Exception as e:
             print(f"Errore durante lo scaricamento della rete stradale per '{city_name}': {e}")
             print("Assicurati che il nome della città sia valido e che ci sia una connessione internet.")
             return
     else:
-        print(f"Caricamento rete stradale esistente da {graphml_filepath}")
+        print(f"Caricamento rete stradale esistente da {graphml_filepath}.")
         G = load_road_network(filepath=graphml_filepath)
 
     if G is not None:
@@ -124,7 +119,7 @@ def main():
 
     # Logica per scaricare o caricare i Punti di Interesse
     if not os.path.exists(geojson_filepath):
-        print(f"File POI per '{city_name}' non trovato. Scaricamento in corso...")
+        print(f"\nFile POI per '{city_name}' non trovato. Scaricamento in corso...")
         try:
             tags = {
                 'highway': ['traffic_signals', 'crossing'],
@@ -136,11 +131,11 @@ def main():
             pois_gdf = ox.features_from_place(city_name, tags=tags)
 
             if not pois_gdf.empty:
-                # Converti geometrie multiple a punti se necessario, filtra per Point
+                # Converte geometrie multiple a punti se necessario, filtra per Point
                 pois_gdf['geometry'] = pois_gdf['geometry'].apply(lambda geom: geom.geoms[0] if geom.geom_type == 'MultiPoint' else geom)
                 pois_gdf = pois_gdf[pois_gdf.geometry.geom_type == 'Point']
                 pois_gdf.to_file(geojson_filepath, driver="GeoJSON")
-                print(f"POI per '{city_name}' salvati in {geojson_filepath}")
+                print(f"POI per '{city_name}' salvati in: {geojson_filepath}.")
             else:
                 print(f"Nessun POI rilevante trovato per '{city_name}'. Il file {geojson_filepath} non sarà creato.")
                 pois_gdf = gpd.GeoDataFrame() # Imposta a GeoDataFrame vuoto
@@ -148,7 +143,7 @@ def main():
             print(f"Errore durante lo scaricamento dei POI per '{city_name}': {e}")
             pois_gdf = gpd.GeoDataFrame() # Imposta a GeoDataFrame vuoto in caso di errore
     else:
-        print(f"Caricamento POI esistenti da {geojson_filepath}")
+        print(f"\nCaricamento POI esistenti da {geojson_filepath}.")
         pois_gdf = load_pois(filepath=geojson_filepath)
         if pois_gdf is None or pois_gdf.empty:
             print("Il GeoDataFrame dei POI è vuoto o non è stato caricato correttamente. Verrà considerato vuoto.")
@@ -161,23 +156,6 @@ def main():
 
     city_name_lower = city_name.replace(', ', '_').replace(' ', '_').replace('/', '_').lower()
 
-    ###### Calcola il centro dinamico (centroid) dei POI per allineare traffico e incidenti
-    #####if not pois_gdf.empty:
-    #####    if pois_gdf.crs and pois_gdf.crs.is_projected:
-    #####        pois_gdf_geographic = pois_gdf.to_crs(epsg=4326)
-    #####    else:
-    #####        pois_gdf_geographic = pois_gdf
-
-        ####### Calcola il centroid di tutte le geometrie dei POI combinate
-        ######city_center_from_pois_lat = pois_gdf_geographic.geometry.union_all().centroid.y
-        ######city_center_from_pois_lon = pois_gdf_geographic.geometry.union_all().centroid.x
-        #print(f"Calcolato centro della città dai POI: Lat={city_center_from_pois_lat:.4f}, Lon={city_center_from_pois_lon:.4f}")
-    #######else:
-        # Fallback: se per qualche motivo non ci sono POI, usa il centro predefinito dalla configurazione
-        ###########city_center_from_pois_lat = cities_data[city_name_lower]["center_lat"]
-        ###########city_center_from_pois_lon = cities_data[city_name_lower]["center_lon"]
-        ###########print("Nessun POI trovato per calcolare il centro, usando il centro predefinito da CITIES_DATA.")
-
     # --- Dati Incidenti fittizi o reali ---
     print(f"\n\n--- Fase 2: Caricamento/Generazione Dati incidenti per '{city_name}' ---")
 
@@ -186,8 +164,6 @@ def main():
     if df_accidents is None or df_accidents.empty:
         print(f"ATTENZIONE: Dati incidenti stradali da {accidents_filepath} non disponibili o vuoti.\n"
               f"Verrà creato un dataset fittizio.")
-
-        #center_lat_city, center_lon_city = ox.geocode(city_name)
 
         nodes_gdf_full_area = ox.graph_to_gdfs(G, nodes=True, edges=False)
         nodes_gdf_full_area = nodes_gdf_full_area.to_crs("EPSG:4326")
@@ -213,7 +189,7 @@ def main():
         df_accidents.to_excel(filepath_accidents, index=False)
         print(f"Dataset incidenti fittizio generato in tempo reale e salvato: {filepath_accidents}.")
     else:
-        print(f"Dati incidenti caricati da: {accidents_filepath}")
+        print(f"Dati incidenti caricati da: {accidents_filepath}.")
 
     # --- Dati Traffico ---
     print(f"\n\n--- Fase 3: Caricamento/Generazione Dati Traffico per '{city_name}' ---")
@@ -262,7 +238,7 @@ def main():
         df_traffic.to_excel(traffic_filepath, index=False)
         print(f"Dataset traffico fittizio generato in tempo reale e salvato: {traffic_filepath}.")
     else:
-        print(f"Dati traffico caricati da: {traffic_filepath}")
+        print(f"Dati traffico caricati da: {traffic_filepath}.")
 
     print("\n\n--- Fase 4: Pre-elaborazione e Feature Engineering ---")
     gdf_traffic_processed = preprocess_traffic_data(df_traffic)
@@ -353,7 +329,7 @@ def main():
     # Salva la mappa
     incident_traffic_filepath = f"data/distribuzione_incidenti_traffico_{city_name_lower}.html"
     debug_map.save(incident_traffic_filepath)
-    print(f"Mappa della distribuzione dei dati di incidenti/traffico salvata: {incident_traffic_filepath}")
+    print(f"\nMappa della distribuzione dei dati di incidenti/traffico salvata:\n{incident_traffic_filepath}.")
 
     # --- 3. Integrazione Dati ---
     print("\n\n--- Fase 5: Integrazione Feature ---")
@@ -368,12 +344,12 @@ def main():
         buffer_distance=cities_data[city_name_lower]["buffer_distance_meters"]
     )
 
-    print(f"Dataset finale con feature integrate creato. Dimensioni: {final_features_df.shape}")
+    print(f"\nDataset finale con feature integrate creato. Dimensioni: {final_features_df.shape}")
     #print("Prime 5 righe del dataset finale:")
     #print(final_features_df.head())
 
     # --- Salva il dataset finale ---
-    print("\n--- Salvataggio del Dataset Finale ---")
+    print("\n\n--- Fase 6: Salvataggio del Dataset Finale ---")
 
     output_dir = 'data/processed'
     os.makedirs(output_dir, exist_ok=True) # Crea la cartella se non esiste
@@ -388,9 +364,9 @@ def main():
         print("ATTENZIONE: La colonna 'num_incidenti_vicini' non è presente, impossibile creare il target binario.")
 
     final_features_df.to_excel(output_filepath, index=False, float_format='%.2f')
-    print(f"\nDataset finale salvato in: {output_filepath}")
+    print(f"\nDataset aggiornato salvato in: {output_filepath}.")
 
-    print("\n\n--- Fase 6: Previsione ---")
+    print("\n\n--- Fase 7: Previsione ---")
     # Definizione della Variabile Target e delle Feature
     # Rimosso num_incidenti_vicini e ha_incidente_vicino (oltre la Y) per evitare Data Leakage
     features = [col for col in final_features_df.columns if col not in ['osmid', 'num_incidenti_vicini', TARGET_COLUMN_BINARY]]
@@ -399,7 +375,7 @@ def main():
     X = final_features_df[features] # DataFrame delle feature
     y = final_features_df[TARGET_COLUMN_BINARY] # Series della variabile target binaria
 
-    print(f"\nVariabile target '{TARGET_COLUMN_BINARY}' per il modello definita.")
+    print(f"Variabile target '{TARGET_COLUMN_BINARY}' per il modello definita.")
     print(f"Numero di feature per il modello: {len(features)}")
     #print("Features usate nel modello:", features)
     #print(f"Prime 5 righe delle feature (X):\n{X.head()}")
@@ -439,9 +415,9 @@ def main():
     os.makedirs(model_folder, exist_ok=True)
 
     joblib.dump(model, MODEL_FILENAME)
-    print(f"Modello addestrato con successo e salvato in {MODEL_FILENAME}.")
+    print(f"Modello addestrato con successo e salvato in: {MODEL_FILENAME}.")
 
-    print("\n\n--- Fase 7: Valutazione ---")
+    print("\n\n--- Fase 8: Valutazione ---")
     y_pred_proba = model.predict_proba(X_test)[:, 1] # Probabilità della classe 1 (incidente)
     y_pred_class = model.predict(X_test) # Classe prevista (0 o 1)
 
@@ -449,11 +425,11 @@ def main():
     print(f"Precision: {precision_score(y_test, y_pred_class, zero_division=0):.2f}")
     print(f"Recall: {recall_score(y_test, y_pred_class, zero_division=0):.2f}")
     print(f"F1-Score: {f1_score(y_test, y_pred_class, zero_division=0):.2f}")
-    #Receiver Operating Characteristic - Area Under the Curve.
+    # Receiver Operating Characteristic - Area Under the Curve.
     print(f"ROC AUC: {roc_auc_score(y_test, y_pred_proba):.2f}")
     print("Matrice di Confusione:\n", confusion_matrix(y_test, y_pred_class))
 
-    print("\n\n--- Fase 8: Scoring dei Nodi e Generazione Raccomandazioni ---")
+    print("\n\n--- Fase 9: Scoring dei Nodi e Generazione Raccomandazioni ---")
 
     # Calcola la gravità media degli incidenti
     severity_features_df = calculate_incident_severity_features(
@@ -494,12 +470,12 @@ def main():
 
     output_final_features_filepath = os.path.join(output_dir, f'final_features_for_scoring_{city_name_lower}.xlsx')
     candidate_locations_scored.to_excel(output_final_features_filepath, index=False, float_format='%.3f')
-    print(f"Dataset finale per scoring e raccomandazioni salvato in: {output_final_features_filepath}")
+    print(f"Dataset finale per scoring e raccomandazioni salvato in: {output_final_features_filepath}.")
 
     # Imposta lo stile per una migliore leggibilità
     sns.set_style("whitegrid")
 
-    # Grafico a dispersione (Scatter Plot): probabilità vs indice di rischio
+    # Grafico a dispersione (Scatter Plot): probabilità predetta vs indice di rischio
     plt.figure(figsize=(10, 8))
     sns.scatterplot(x='probabilità_rischio_incidente_predetta', y='indice_rischio', data=candidate_locations_scored, alpha=0.5, hue='indice_rischio', palette='viridis', size='indice_rischio', sizes=(20, 400))
     plt.title('Probabilità di Rischio Predetta vs Indice di Rischio')
@@ -515,31 +491,11 @@ def main():
     # anche l'indice_rischio tende ad aumentare in modo proporzionale.
     # Più il valore è vicino a 1, più forte è la relazione.
 
-
-    # Istogrammi delle distribuzioni
-    ###plt.figure(figsize=(12, 5))
-###
-    ###plt.subplot(1, 2, 1) # 1 riga, 2 colonne, primo grafico
-    ###sns.histplot(candidate_locations_scored['probabilità_rischio_incidente_predetta'], bins=30, kde=True, color='skyblue')
-    ###plt.title('Distribuzione Probabilità di Rischio Predetta')
-    ###plt.xlabel('Probabilità')
-    ###plt.ylabel('Frequenza')
-###
-    ###plt.subplot(1, 2, 2) # 1 riga, 2 colonne, secondo grafico
-    ###sns.histplot(candidate_locations_scored['indice_rischio'], bins=30, kde=True, color='lightcoral')
-    ###plt.title('Distribuzione Indice di Rischio')
-    ###plt.xlabel('Indice')
-    ###plt.ylabel('Frequenza')
-###
-    ###plt.tight_layout() # Adatta i subplot per evitare sovrapposizioni
-    ###plt.show()
-    ###########
-
     # Generazione raccomandazioni
     recommendations = recommend_interventions(candidate_locations_scored)
 
     # --- 7. Visualizzazione Raccomandazioni su Mappa ---
-    print("\n\n--- Fase 9: Visualizzazione Raccomandazioni ---")
+    print("\n\n--- Fase 10: Visualizzazione Raccomandazioni ---")
 
     if recommendations:
         recommendations_df = pd.DataFrame(recommendations)
@@ -549,12 +505,11 @@ def main():
 
     output_recommendations_df_filepath = os.path.join(output_dir, f'recommendations_df_{city_name_lower}.xlsx')
     recommendations_df.to_excel(output_recommendations_df_filepath, index=False, float_format='%.2f')
-    print(f"Dataset raccomandazioni salvato in: {output_recommendations_df_filepath}")
+    print(f"Dataset raccomandazioni salvato in: {output_recommendations_df_filepath}.")
 
     output_map_filename = f"{city_name_lower}_recommendations_map.html"
     output_map_filepath = os.path.join("reports", output_map_filename)
 
-    # Assicurati che la cartella 'reports' esista
     os.makedirs("reports", exist_ok=True)
 
     # La funzione plot_recommendations_on_map necessita del grafo G e delle raccomandazioni.

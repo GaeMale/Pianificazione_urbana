@@ -105,7 +105,7 @@ def plot_recommendations_on_map(G, recommendations_df, filepath="reports/recomme
     folium.LayerControl().add_to(m)
 
     m.save(filepath)
-    print(f"Mappa delle raccomandazioni salvata in {filepath}")
+    print(f"Mappa delle raccomandazioni salvata in: {filepath}.")
 
     try:
         webbrowser.open(f'file://{os.path.abspath(filepath)}')
@@ -244,7 +244,7 @@ def plot_osm_data_on_map(G, pois_gdf, filepath="reports/osm_data_map.html"):
     folium.LayerControl().add_to(m)
 
     m.save(filepath)
-    print(f"Mappa interattiva dei dati OSM salvata in {filepath}")
+    print(f"Mappa interattiva dei dati OSM salvata in: {filepath}.")
 
     try:
         webbrowser.open(f'file://{os.path.abspath(filepath)}')

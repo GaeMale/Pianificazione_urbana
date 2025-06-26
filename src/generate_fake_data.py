@@ -6,12 +6,7 @@ import numpy as np
 from datetime import datetime, timedelta
 
 
-def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance, num_accidents,
-                                 incident_generation_center_lat=None,
-                                 incident_generation_center_lon=None,
-                                 incident_generation_spread_lat=0.01, # ~1km di dispersione latitudinale
-                                 incident_generation_spread_lon=0.01 # ~1km di dispersione longitudinale
-                                 ):
+def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance, num_accidents):
     """
     Genera dati di incidenti fittizi con una maggiore probabilità di accadere in aree con
     caratteristiche di rischio (es. scuole, negozi, attraversamenti pedonali) presenti nei nodi OSM.
@@ -24,17 +19,12 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
                                      e deve poter essere proiettata.
         buffer_distance (int): Distanza in metri per il buffer attorno ai nodi per valutare il rischio.
         num_accidents (int): Numero totale di incidenti fittizi da generare.
-        incident_generation_center_lat (float, optional): Latitudine del centro per la distribuzione geografica degli incidenti generati.
-                                                           Se None, usa il centro medio dei nodi dell'area di studio.
-        incident_generation_center_lon (float, optional): Longitudine del centro per la distribuzione geografica degli incidenti generati.
-        incident_generation_spread_lat (float, optional): Deviazione standard (in gradi di latitudine) per lo spread geografico degli incidenti generati.
-        incident_generation_spread_lon (float, optional): Deviazione standard (in gradi di longitudine) per lo spread geografico degli incidenti generati.
 
     Returns:
         pd.DataFrame: DataFrame degli incidenti fittizi con Latitudine, Longitudine, Data, Ora, Gravita, Causa, Tipo Veicolo, CondizioniMeteo.
     """
 
-    print(f"Generazione di {num_accidents} incidenti fittizi...")
+    print(f"\nGenerazione di {num_accidents} incidenti fittizi...")
     #print(f"Buffer di rischio per POI: {buffer_distance}m.")
 
     nodes_gdf_geographic = nodes_gdf_full_area.copy()
@@ -44,9 +34,6 @@ def generate_fake_accidents_data(nodes_gdf_full_area, pois_gdf, buffer_distance,
         return pd.DataFrame(columns=['Latitudine', 'Longitudine', 'Data', 'Ora', 'Gravita', 'Causa', 'Tipo Veicolo'])
 
     #print(f"Base di {len(nodes_gdf_geographic)} nodi (incroci) reali per l'area di studio.")
-
-    # nodes_in_area_gdf ora è l'intero set di nodi (non filtrato).
-    #####################nodes_in_area_gdf = nodes_gdf_geographic
 
     # Proietta i GeoDataFrame per i calcoli spaziali
     target_crs_proj = nodes_gdf_geographic.estimate_utm_crs()

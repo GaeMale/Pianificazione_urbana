@@ -1,8 +1,8 @@
-#I dati si riferiscono all'anno
+# I dati si riferiscono all'anno
 
 cities_data = {
     "terlizzi_italy": {
-        "num_accidents": 200, #100
+        "num_accidents": 200,
         "center_lat": 41.12, "center_lon": 16.53,
         "num_traffic_sensors": 100,
         "num_readings_per_sensor": 75,
